@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FiHome, FiSearch, FiBookmark, FiHeart, FiStar, FiSettings, FiLogOut } from 'react-icons/fi';
 import Link from 'next/link'; // Next.js'in Link bileşeni
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'; // Firebase'den Auth modülü
+import { onAuthStateChanged, signOut } from 'firebase/auth'; // Firebase'den Auth modülü
+import { auth } from '@/firebase';
 
 function Sidebar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Kullanıcı giriş yapma durumu
-  const auth = getAuth(); // Firebase Authentication nesnesi
 
   useEffect(() => {
     // Firebase ile oturum durumunu dinle
@@ -33,7 +33,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="fixed top-0 left-0 h-full w-64 bg-black text-white flex flex-col items-start p-6">
+    <div className="fixed top-0 left-0 h-full w-64 bg-neutral-950 border-r border-neutral-700 text-white flex flex-col items-start p-6">
       {/* Logo */}
       <div className="mb-10">
         <h1 className="text-3xl font-bold tracking-wide">
