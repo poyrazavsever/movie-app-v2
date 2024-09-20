@@ -95,10 +95,10 @@ function Sidebar() {
                 <FiSettings size={20} />
                 <Link href="/settings">Settings</Link>
               </li>
-              <li className="flex items-center space-x-4">
+              <li className="flex items-center space-x-4 hover:text-purple-500">
                 <FiLogOut size={20} />
                 <button
-                  className="text-left hover:text-purple-500"
+                  className="text-left"
                   onClick={handleLogout}
                 >
                   Log out

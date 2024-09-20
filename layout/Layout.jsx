@@ -1,12 +1,13 @@
-import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
-function Layout({children}) {
+function Layout({ children }) {
   return (
     <div>
-      <Sidebar />
+      <div>
+        <Sidebar />
+      </div>
       {/* Toaster bileşenine Tailwind ile mor ve koyu tema ekledik */}
       <Toaster
         toastOptions={{
@@ -29,7 +30,6 @@ function Layout({children}) {
         }}
       />
       {children}
-      <Footer />
     </div>
   );
 }
