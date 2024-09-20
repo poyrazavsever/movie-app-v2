@@ -13,6 +13,7 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 export default function Browse() {
   const [movies, setMovies] = useState([]);
+  const [originalMovies, setOriginalMovies] = useState([]); // Original movie list
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({
     sortBy: 'popularity.desc',
@@ -34,15 +35,21 @@ export default function Browse() {
         },
       })
       .then((response) => {
+        const fetchedMovies = response.data.results;
         setMovies((prevMovies) =>
-          reset ? response.data.results : [...prevMovies, ...response.data.results]
+          reset ? fetchedMovies : [...prevMovies, ...fetchedMovies]
         );
+
+        // Update original movie list on reset
+        if (reset) {
+          setOriginalMovies(fetchedMovies);
+        }
       })
       .catch((error) => console.error(error));
   };
 
   useEffect(() => {
-    fetchMovies();
+    fetchMovies(true); // Initial fetch
     // Listen for authentication state changes
     onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -55,7 +62,8 @@ export default function Browse() {
     setQuery(searchQuery);
 
     if (searchQuery === '') {
-      fetchMovies(true);
+      // Reset to original movies
+      setMovies(originalMovies);
     } else {
       axios
         .get(`${TMDB_BASE_URL}/search/movie`, {
