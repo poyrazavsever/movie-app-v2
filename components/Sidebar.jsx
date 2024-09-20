@@ -76,7 +76,7 @@ function Sidebar() {
         </ul>
       </div>
 
-      <div className="mt-10 w-full">
+      {/* <div className="mt-10 w-full">
         <p className="text-gray-400 uppercase text-sm mb-4">Other</p>
         <ul className="space-y-4">
           <li className={linkClassName("/soon")}>
@@ -84,17 +84,17 @@ function Sidebar() {
             <Link href="/soon">Soon</Link>
           </li>
         </ul>
-      </div>
+      </div> */}
 
       <div className="mt-10 w-full">
         <p className="text-gray-400 uppercase text-sm mb-4">General</p>
         <ul className="space-y-4">
           {isAuthenticated ? (
             <>
-              <li className={linkClassName("/settings")}>
+              {/* <li className={linkClassName("/settings")}>
                 <FiSettings size={20} />
                 <Link href="/settings">Settings</Link>
-              </li>
+              </li> */}
               <li className="flex items-center space-x-4 hover:text-purple-500">
                 <FiLogOut size={20} />
                 <button
