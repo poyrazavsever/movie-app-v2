@@ -16,7 +16,7 @@
   
 ---
 #### UI / UX Design: 
-[https://www.figma.com/file/fvD3vGaEhYmarbOZFZLCtj/Movie-App?type=design&node-id=110-121&mode=design&t=Ca2qjvL9NzrViQgt-0](https://www.figma.com/file/fvD3vGaEhYmarbOZFZLCtj/Movie-App?type=design&node-id=110-121&mode=design&t=Ca2qjvL9NzrViQgt-0)
+[Ohrama UI Design](https://www.figma.com/file/fvD3vGaEhYmarbOZFZLCtj/Movie-App?type=design&node-id=110-121&mode=design&t=Ca2qjvL9NzrViQgt-0)
 
 ---
 #### Demo: 
