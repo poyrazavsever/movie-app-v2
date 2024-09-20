@@ -9,9 +9,9 @@
 
 ### The technologies I used in this project were:
 
-**Front-end:** Nextjs, Redux, TailwindCSS, TMDB API, Express.js
+**Front-end:** Nextjs, Redux, TailwindCSS, TMDB API
 
-**BE, Database:** MongoDB
+**BE, Database:** Firebase
 
   
 ---
