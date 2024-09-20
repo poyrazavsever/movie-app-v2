@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FiSearch, FiArrowRight, FiArrowLeft } from 'react-icons/fi';
+import { FiSearch, FiArrowRight, FiArrowLeft, FiPlus, FiHeart, FiInfo } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 // Base URL for TMDB API and image paths
-const API_KEY = process.env.NEXT_PUBLIC_TMBD_API
+const API_KEY = process.env.NEXT_PUBLIC_TMBD_API;
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const BANNER_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
@@ -14,19 +15,20 @@ export default function Home() {
   const [popularMovies, setPopularMovies] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [carouselOffset, setCarouselOffset] = useState(0);
+  const router = useRouter(); // For navigation
 
   const cardWidth = 250; // Film kartlarının genişliği
   const gap = 20; // Kartlar arasındaki boşluk
 
   // Fetch popular movies and banners from TMDB
   useEffect(() => {
-    // Fetch banners for the slider (now playing movies)
-    axios.get(`${TMDB_BASE_URL}/movie/now_playing?api_key=${API_KEY}`)
+    axios
+      .get(`${TMDB_BASE_URL}/movie/now_playing?api_key=${API_KEY}`)
       .then((response) => setBanners(response.data.results))
       .catch((error) => console.error(error));
 
-    // Fetch popular movies for trending section
-    axios.get(`${TMDB_BASE_URL}/movie/popular?api_key=${API_KEY}`)
+    axios
+      .get(`${TMDB_BASE_URL}/movie/popular?api_key=${API_KEY}`)
       .then((response) => setPopularMovies(response.data.results))
       .catch((error) => console.error(error));
   }, []);
@@ -45,6 +47,10 @@ export default function Home() {
 
   const handlePrev = () => {
     setCarouselOffset((prevOffset) => prevOffset + (cardWidth + gap));
+  };
+
+  const goToDetails = (id) => {
+    router.push(`/movie/${id}`);
   };
 
   return (
@@ -98,7 +104,7 @@ export default function Home() {
             {popularMovies.map((movie) => (
               <motion.div
                 key={movie.id}
-                className="w-64 h-80 mx-2 flex-shrink-0"
+                className="w-64 h-80 mx-2 flex-shrink-0 relative group"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -109,6 +115,29 @@ export default function Home() {
                   className="w-full h-full object-cover rounded-lg"
                 />
                 <h3 className="text-white text-lg text-center mt-2">{movie.title}</h3>
+
+                {/* Icons for +, heart, and detail */}
+                <div className="absolute top-2 right-2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    title="Add to your watch list"
+                    className="p-1 bg-purple-600 text-white rounded-full hover:bg-purple-700"
+                  >
+                    <FiPlus size={20} />
+                  </button>
+                  <button
+                    title="Add to your favorites"
+                    className="p-1 bg-purple-600 text-white rounded-full hover:bg-purple-700"
+                  >
+                    <FiHeart size={20} />
+                  </button>
+                  <button
+                    title="View details"
+                    onClick={() => goToDetails(movie.id)}
+                    className="p-1 bg-purple-600 text-white rounded-full hover:bg-purple-700"
+                  >
+                    <FiInfo size={20} />
+                  </button>
+                </div>
               </motion.div>
             ))}
           </motion.div>
