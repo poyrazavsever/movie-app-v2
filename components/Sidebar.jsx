@@ -114,7 +114,7 @@ function Sidebar() {
         </ul>
       </div>
 
-      {/* Language Dropdown and Dark/Light Mode Toggle */}
+      {/* Language Dropdown and Dark/Light Mode Toggle
       <div className="mt-4 w-full">
         <div className="relative mb-4">
           <button
@@ -127,7 +127,6 @@ function Sidebar() {
             <ul className="absolute left-0 w-full bg-neutral-800 border border-neutral-700 rounded mt-1">
               <li className="p-2 hover:bg-neutral-700 cursor-pointer" onClick={() => handleLanguageChange("English")}>English</li>
               <li className="p-2 hover:bg-neutral-700 cursor-pointer" onClick={() => handleLanguageChange("Turkish")}>Turkish</li>
-              {/* Add more languages here */}
             </ul>
           )}
         </div>
@@ -138,7 +137,7 @@ function Sidebar() {
           {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
           <span className="ml-2">{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
