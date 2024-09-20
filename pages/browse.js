@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { FiHeart, FiInfo, FiPlus } from 'react-icons/fi';
-import { useRouter } from 'next/router';
-import toast from 'react-hot-toast'; // Import toast
-import { auth, db } from '../firebase'; // Import Firebase
-import { doc, setDoc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth'; // Auth state observer
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { FiHeart, FiInfo, FiPlus } from "react-icons/fi";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast"; // Import toast
+import { auth, db } from "../firebase"; // Import Firebase
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth"; // Auth state observer
 
 const API_KEY = process.env.NEXT_PUBLIC_TMBD_API;
-const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+const TMDB_BASE_URL = "https://api.themoviedb.org/3";
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
 export default function Browse() {
   const [movies, setMovies] = useState([]);
   const [originalMovies, setOriginalMovies] = useState([]); // Original movie list
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({
-    sortBy: 'popularity.desc',
-    genre: '',
+    sortBy: "popularity.desc",
+    genre: "",
   });
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [user, setUser] = useState(null); // User state
   const router = useRouter();
 
@@ -61,7 +61,7 @@ export default function Browse() {
     const searchQuery = e.target.value;
     setQuery(searchQuery);
 
-    if (searchQuery === '') {
+    if (searchQuery === "") {
       // Reset to original movies
       setMovies(originalMovies);
     } else {
@@ -86,14 +86,28 @@ export default function Browse() {
   };
 
   // Function to handle adding to Firestore
+  // Function to handle adding to Firestore
   const handleAddToFirestore = async (collection, movie) => {
     if (!user) {
       toast.error("You need to log in to perform this action.");
       return;
     }
 
+    const docRef = doc(db, collection, `${user.uid}_${movie.id}`);
+
     try {
-      await setDoc(doc(db, collection, `${user.uid}_${movie.id}`), {
+      // Check if the document already exists
+      const docSnapshot = await getDoc(docRef);
+      if (docSnapshot.exists()) {
+        toast.error(
+          `${movie.title} is already in your ${
+            collection === "movieList" ? "Watch List" : "Favorites"
+          }!`
+        );
+        return;
+      }
+
+      await setDoc(docRef, {
         userId: user.uid,
         movieId: movie.id,
         title: movie.title,
@@ -102,7 +116,7 @@ export default function Browse() {
       });
       toast.success(
         `${movie.title} added to your ${
-          collection === 'movieList' ? 'Watch List' : 'Favorites'
+          collection === "movieList" ? "Watch List" : "Favorites"
         }!`
       );
     } catch (error) {
@@ -160,13 +174,13 @@ export default function Browse() {
             <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-4">
               <button
                 className="text-white text-2xl bg-purple-500 p-2 rounded"
-                onClick={() => handleAddToFirestore('movieList', movie)}
+                onClick={() => handleAddToFirestore("movieList", movie)}
               >
                 <FiPlus />
               </button>
               <button
                 className="text-white text-2xl bg-purple-500 p-2 rounded"
-                onClick={() => handleAddToFirestore('favoriteList', movie)}
+                onClick={() => handleAddToFirestore("favoriteList", movie)}
               >
                 <FiHeart />
               </button>

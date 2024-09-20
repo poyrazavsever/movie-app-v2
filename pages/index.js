@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast"; // Import toast
 import { auth, db } from "../firebase"; // Import Firebase
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth"; // Auth state observer
 
 const API_KEY = process.env.NEXT_PUBLIC_TMBD_API;
@@ -61,14 +61,28 @@ export default function Home() {
   };
 
   // Function to handle adding to Firestore
+  // Function to handle adding to Firestore
   const handleAddToFirestore = async (collection, movie) => {
     if (!user) {
       toast.error("You need to log in to perform this action.");
       return;
     }
 
+    const docRef = doc(db, collection, `${user.uid}_${movie.id}`);
+
     try {
-      await setDoc(doc(db, collection, `${user.uid}_${movie.id}`), {
+      // Check if the document already exists
+      const docSnapshot = await getDoc(docRef);
+      if (docSnapshot.exists()) {
+        toast.error(
+          `${movie.title} is already in your ${
+            collection === "movieList" ? "Watch List" : "Favorites"
+          }!`
+        );
+        return;
+      }
+
+      await setDoc(docRef, {
         userId: user.uid,
         movieId: movie.id,
         title: movie.title,
