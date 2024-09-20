@@ -54,7 +54,7 @@ export default function Browse() {
     onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
-  }, [page, filters]);
+  }, [filters]);
 
   // Search Functionality
   const handleSearch = (e) => {
@@ -82,10 +82,11 @@ export default function Browse() {
 
   // Load more movies
   const handleLoadMore = () => {
-    setPage((prevPage) => prevPage + 1);
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchMovies(); // Fetch next page of movies
   };
 
-  // Function to handle adding to Firestore
   // Function to handle adding to Firestore
   const handleAddToFirestore = async (collection, movie) => {
     if (!user) {
@@ -96,7 +97,6 @@ export default function Browse() {
     const docRef = doc(db, collection, `${user.uid}_${movie.id}`);
 
     try {
-      // Check if the document already exists
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
         toast.error(
