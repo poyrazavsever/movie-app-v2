@@ -20,7 +20,7 @@
 
 ---
 #### Demo: 
-[not yet]()
+[Ohrama Demo](https://movie-app-v2-zcp7.vercel.app/)
 
 
   ---
